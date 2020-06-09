@@ -1,0 +1,236 @@
+import math
+
+def computeTF(wd, bow):
+    listx=['canada','CANADA']
+
+    tf={}
+    bowcount=len(bow)
+    for word, count in wd.items():
+        if word in listx:
+            tf[word]=count/float(bowcount)
+    return tf
+
+def computeIDF(doc):
+    listx=['canada','CANADA']
+    idf={}
+    N=len(doc)
+
+    idf= {'canada':0,'CANADA':0}
+    for i in doc:
+        for word,val in i.items():
+            if word in listx:
+                if val>0:
+                    idf[word]+=1
+
+    for word,val in idf.items():
+        idf[word]=math.log(N/ float(val))
+    return idf
+
+def computeTFIDP(tf,idf):
+    tfidf={}
+    for word,val in tf.items():
+        tfidf[word]=val*idf[word]
+    return tfidf
+
+def reuter(filename):
+    filex= open(filename)
+    str1=''
+    for i in filex:
+        str1= str1+i
+    k=[]
+    l=[]
+    h= str1.split('<BODY>')
+    for a in h:
+        j=a.split('</BODY>')
+        k.append(j[0])
+    for b in k:
+
+        b=b.strip('\n')
+        b=b.strip('Reuter\n&#3;')
+        b=b.strip('REUTE')
+        l.append(b)
+
+
+    return l
+
+def DictCount(filename):
+
+    ws=set()
+    for i in filename:
+        bow=i.split()
+
+        ws1=set(bow)
+        ws=ws.union(ws1)
+    wd=dict.fromkeys(ws,0)
+
+    for i in filename:
+        bow=i.split()
+
+        for word in bow:
+            wd[word]+=1
+    return wd
+def bagofwords(filename):
+    bagofwords=[]
+    for i in filename:
+        bow=i.split()
+        for a in bow:
+            bagofwords.append(a)
+    return bagofwords
+
+
+file1=reuter('reut2-000.sgm')
+file2=reuter('reut2-001.sgm')
+file3=reuter('reut2-002.sgm')
+file4=reuter('reut2-003.sgm')
+file5=reuter('reut2-004.sgm')
+file6=reuter('reut2-005.sgm')
+file7=reuter('reut2-006.sgm')
+file8=reuter('reut2-007.sgm')
+file9=reuter('reut2-008.sgm')
+file10=reuter('reut2-009.sgm')
+file11=reuter('reut2-010.sgm')
+file12=reuter('reut2-011.sgm')
+file13=reuter('reut2-012.sgm')
+file14=reuter('reut2-013.sgm')
+file15=reuter('reut2-014.sgm')
+file16=reuter('reut2-015.sgm')
+file17=reuter('reut2-016.sgm')
+#file18=reuter('reut2-017.sgm')
+file19=reuter('reut2-018.sgm')
+file20=reuter('reut2-019.sgm')
+file21=reuter('reut2-020.sgm')
+file22=reuter('reut2-021.sgm')
+
+
+file1dict= DictCount(file1)
+file2dict= DictCount(file2)
+file3dict= DictCount(file3)
+file4dict= DictCount(file4)
+file5dict= DictCount(file5)
+file6dict= DictCount(file6)
+file7dict= DictCount(file7)
+file8dict= DictCount(file8)
+file9dict= DictCount(file9)
+file10dict= DictCount(file10)
+file11dict= DictCount(file11)
+file12dict= DictCount(file12)
+file13dict= DictCount(file13)
+file14dict= DictCount(file14)
+file15dict= DictCount(file15)
+file16dict= DictCount(file16)
+file17dict= DictCount(file17)
+#file18dict= DictCount(file18)
+file19dict= DictCount(file19)
+file20dict= DictCount(file20)
+file21dict= DictCount(file21)
+file22dict= DictCount(file22)
+
+
+
+bow1=bagofwords(file1)
+bow2=bagofwords(file2)
+bow3=bagofwords(file3)
+bow4=bagofwords(file4)
+bow5=bagofwords(file5)
+bow6=bagofwords(file6)
+bow7=bagofwords(file7)
+bow8=bagofwords(file8)
+bow9=bagofwords(file9)
+bow10=bagofwords(file10)
+bow11=bagofwords(file11)
+bow12=bagofwords(file12)
+bow13=bagofwords(file13)
+bow14=bagofwords(file14)
+bow15=bagofwords(file15)
+bow16=bagofwords(file16)
+bow17=bagofwords(file17)
+#bow18=bagofwords(file18)
+bow19=bagofwords(file19)
+bow20=bagofwords(file20)
+bow21=bagofwords(file21)
+bow22=bagofwords(file22)
+
+tffile1= computeTF(file1dict,bow1)
+tffile2= computeTF(file2dict,bow2)
+tffile3= computeTF(file3dict,bow3)
+tffile4= computeTF(file4dict,bow4)
+tffile5= computeTF(file5dict,bow5)
+tffile6= computeTF(file6dict,bow6)
+tffile7= computeTF(file7dict,bow7)
+tffile8= computeTF(file8dict,bow8)
+tffile9= computeTF(file9dict,bow9)
+tffile10= computeTF(file10dict,bow10)
+tffile11= computeTF(file11dict,bow11)
+tffile12= computeTF(file12dict,bow12)
+tffile13= computeTF(file13dict,bow13)
+tffile14= computeTF(file14dict,bow14)
+tffile15= computeTF(file15dict,bow15)
+tffile16= computeTF(file16dict,bow16)
+tffile17= computeTF(file17dict,bow17)
+#tffile18= computeTF(file18dict,bow18)
+tffile19= computeTF(file19dict,bow19)
+tffile20= computeTF(file20dict,bow20)
+tffile21= computeTF(file21dict,bow21)
+tffile22= computeTF(file22dict,bow22)
+
+
+idf= computeIDF([tffile1,tffile2,tffile3,tffile4,tffile5,tffile6,tffile7,tffile8,tffile9,tffile10,tffile11,tffile12,tffile13,tffile14,tffile15,tffile16,tffile17,tffile19,tffile20,tffile21,tffile22])
+
+tfidf1=computeTFIDP(tffile1,idf)
+tfidf2=computeTFIDP(tffile2,idf)
+tfidf3=computeTFIDP(tffile3,idf)
+tfidf4=computeTFIDP(tffile4,idf)
+tfidf5=computeTFIDP(tffile5,idf)
+tfidf6=computeTFIDP(tffile6,idf)
+tfidf7=computeTFIDP(tffile7,idf)
+tfidf8=computeTFIDP(tffile8,idf)
+tfidf9=computeTFIDP(tffile9,idf)
+tfidf10=computeTFIDP(tffile10,idf)
+tfidf11=computeTFIDP(tffile11,idf)
+tfidf12=computeTFIDP(tffile12,idf)
+tfidf13=computeTFIDP(tffile13,idf)
+tfidf14=computeTFIDP(tffile14,idf)
+tfidf15=computeTFIDP(tffile15,idf)
+tfidf16=computeTFIDP(tffile16,idf)
+tfidf17=computeTFIDP(tffile17,idf)
+#tfidf18=computeTFIDP(tffile18,idf)
+tfidf19=computeTFIDP(tffile19,idf)
+tfidf20=computeTFIDP(tffile20,idf)
+tfidf21=computeTFIDP(tffile21,idf)
+tfidf22=computeTFIDP(tffile22,idf)
+tfidflist=[tfidf1,tfidf2,tfidf3,tfidf4,tfidf5,tfidf6,tfidf7,tfidf8,tfidf9,tfidf10,tfidf11,tfidf12,tfidf13,tfidf14,tfidf15,tfidf16,tfidf17,tfidf19,tfidf20,tfidf21,tfidf22]
+count=0
+lv=[]
+lc=[]
+dict1={}
+dict2={}
+for i in tfidflist:
+    count+=1
+
+    for word,val in i.items():
+        if val>0:
+            dict1[count]=val
+            lv.append(val)
+            lc.append(count)
+
+lv.sort(reverse=True)
+
+for i in lv:
+    for key,value in dict1.items():
+        if i==value:
+            print('Reut2-0',key, 'Canada' , value)
+
+
+
+list2=['Canada','canada','CANADA']
+listofiles=['0',file1,file2,file3,file4,file5,file6,file7,file8,file9,file10,file11,file12,file13,file14,file15,file16,file17,file19,file20,file21,file22]
+for i in lc:
+    for a in listofiles[i]:
+        b=a.split()
+        count1=0
+        for c in b:
+            if c in list2:
+                count1+=1
+
+        if count1>3:
+            print(a)
